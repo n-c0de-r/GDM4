@@ -173,7 +173,13 @@ public class GRDM_U4 implements PlugInFilter {
 
 					// Chroma Key
 					if (methode == 6) {
-						// TODO Überlagerung schreiben
+						double dist = Math.sqrt(Math.pow(225-rA, 2) + Math.pow(175-gA, 2) + Math.pow(75-bA, 2));
+						
+						if (dist < 128) {
+							pixels_Erg[pos] = pixels_B[pos];
+						} else {
+							pixels_Erg[pos] = pixels_A[pos];
+						}
 					}
 
 					// Eigener Übergang
