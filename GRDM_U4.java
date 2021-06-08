@@ -182,9 +182,21 @@ public class GRDM_U4 implements PlugInFilter {
 						}
 					}
 
-					// Eigener Übergang
+					// Eigener Übergang, Kombi aus Wischen und Streifen der USA-Flagge ;)
 					if (methode == 7) {
-						// TODO Überlagerung schreiben
+						double stripe = height / 10.0;
+						
+						if (1.0 * y % (2*stripe) >= stripe ) {
+							if (x + 1 > (z - 1) * (double) width / (length - 1))
+								pixels_Erg[pos] = pixels_B[pos];
+							else
+								pixels_Erg[pos] = pixels_A[pos];
+						} else {
+							if (width - x + 1 < (z - 1) * (double) width / (length - 1))
+								pixels_Erg[pos] = pixels_A[pos];
+							else
+								pixels_Erg[pos] = pixels_B[pos];
+						}
 					}
 
 				}
