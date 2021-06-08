@@ -6,10 +6,10 @@ import ij.gui.*;
 import java.awt.*;
 import ij.plugin.filter.*;
 
-public class GRDM_U4_s0577683 implements PlugInFilter {
+public class GRDM_U4 implements PlugInFilter {
 
 	protected ImagePlus imp;
-	final static String[] choices = { "Wischen", "Weiche Blende", "Overlay", "Schieben", "Chroma Key", "Extra" };
+	final static String[] choices = { "Wischen", "Weiche Blende", "Overlay A über B", "Overlay B über A", "Schieben", "Chroma Key", "Extra" };
 
 	public int setup(String arg, ImagePlus imp) {
 		this.imp = imp;
@@ -22,7 +22,7 @@ public class GRDM_U4_s0577683 implements PlugInFilter {
 
 		IJ.open("StackB.zip");
 
-		GRDM_U4_s0577683 sd = new GRDM_U4_s0577683();
+		GRDM_U4 sd = new GRDM_U4();
 		sd.imp = IJ.getImage();
 		ImageProcessor B_ip = sd.imp.getProcessor();
 		sd.run(B_ip);
@@ -71,10 +71,11 @@ public class GRDM_U4_s0577683 implements PlugInFilter {
 		String s = gd.getNextChoice();
 		if (s.equals("Wischen")) methode = 1;
 		if (s.equals("Weiche Blende")) methode = 2;
-		if (s.equals("Overlay")) methode = 3;
-		if (s.equals("Schieben")) methode = 4;
-		if (s.equals("Chroma Key")) methode = 5;
-		if (s.equals("Extra")) methode = 6;
+		if (s.equals("Overlay A über B")) methode = 3;
+		if (s.equals("Overlay B über A")) methode = 4;
+		if (s.equals("Schieben")) methode = 5;
+		if (s.equals("Chroma Key")) methode = 6;
+		if (s.equals("Extra")) methode = 7;
 
 		// Arrays fuer die einzelnen Bilder
 		int[] pixels_B;
@@ -113,13 +114,50 @@ public class GRDM_U4_s0577683 implements PlugInFilter {
 						// TODO Überlagerung schreiben
 					}
 
-					// Overlay
+					// Overlay A über B
 					if (methode == 3) {
-						// TODO Überlagerung schreiben
+						int r, g, b;
+						if (rB < 128) {
+							r = (rA * rB) / 128;
+						} else {
+							r = 255 - ((255-rA) * (255-rB)/128);
+						}
+						if (gB < 128) {
+							g = (gA * gB) / 128;
+						} else {
+							g = 255 - ((255-gA) * (255-gB)/128);
+						}
+						if (bB < 128) {
+							b = (bA * bB) / 128;
+						} else {
+							b = 255 - ((255-bA) * (255-bB)/128);
+						}
+						pixels_Erg[pos] = (r << 16) | (g << 8) | b;
+					}
+					
+					// Overlay B über A
+					if (methode == 4) {
+						int r, g, b;
+						if (rA < 128) {
+							r = (rA * rB) / 128;
+						} else {
+							r = 255 - ((255-rA) * (255-rB)/128);
+						}
+						if (gA < 128) {
+							g = (gA * gB) / 128;
+						} else {
+							g = 255 - ((255-gA) * (255-gB)/128);
+						}
+						if (bA < 128) {
+							b = (bA * bB) / 128;
+						} else {
+							b = 255 - ((255-bA) * (255-bB)/128);
+						}
+						pixels_Erg[pos] = (r << 16) | (g << 8) | b;
 					}
 
 					// Schieben
-					if (methode == 4) {
+					if (methode == 5) {
 						if (x + 1 > (z - 1) * (double) width / (length - 1)) {
 							pixels_Erg[pos] = pixels_B[(int) (pos - (z - 1) * (double) width / (length - 1))];}
 						else
@@ -127,12 +165,12 @@ public class GRDM_U4_s0577683 implements PlugInFilter {
 					}
 
 					// Chroma Key
-					if (methode == 5) {
+					if (methode == 6) {
 						// TODO Überlagerung schreiben
 					}
 
 					// Eigener Übergang
-					if (methode == 6) {
+					if (methode == 7) {
 						// TODO Überlagerung schreiben
 					}
 
