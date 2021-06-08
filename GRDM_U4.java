@@ -111,7 +111,14 @@ public class GRDM_U4 implements PlugInFilter {
 
 					// Weiche Blende
 					if (methode == 2) {
-						// TODO Überlagerung schreiben
+						int r, g, b;						
+						double mask = (1.0 * (z - 1) / (length - 1)) * 255;
+						
+						r = (int) ((rA * mask + rB * (1.0 * 255 - mask)) / 255);
+						g = (int) ((gA * mask + gB * (1.0 * 255 - mask)) / 255);
+						b = (int) ((bA * mask + bB * (1.0 * 255 - mask)) / 255);
+						
+						pixels_Erg[pos] = (r << 16) | (g << 8) | b;
 					}
 
 					// Overlay A über B
