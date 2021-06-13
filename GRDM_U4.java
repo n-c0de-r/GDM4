@@ -103,7 +103,7 @@ public class GRDM_U4 implements PlugInFilter {
 
 					// Wischen
 					if (methode == 1) {
-						if (x + 1 > (z - 1) * (double) width / (length - 1))
+						if (y + 1 > (z - 1) * (double) width / (length - 1))
 							pixels_Erg[pos] = pixels_B[pos];
 						else
 							pixels_Erg[pos] = pixels_A[pos];
@@ -124,19 +124,13 @@ public class GRDM_U4 implements PlugInFilter {
 					// Overlay A über B
 					if (methode == 3) {
 						int r, g, b;
-						if (rB < 128) {
+						if ((rB+gB+bB)/3 < 128) {
 							r = (rA * rB) / 128;
-						} else {
-							r = 255 - ((255-rA) * (255-rB)/128);
-						}
-						if (gB < 128) {
 							g = (gA * gB) / 128;
-						} else {
-							g = 255 - ((255-gA) * (255-gB)/128);
-						}
-						if (bB < 128) {
 							b = (bA * bB) / 128;
 						} else {
+							r = 255 - ((255-rA) * (255-rB)/128);
+							g = 255 - ((255-gA) * (255-gB)/128);
 							b = 255 - ((255-bA) * (255-bB)/128);
 						}
 						pixels_Erg[pos] = (r << 16) | (g << 8) | b;
