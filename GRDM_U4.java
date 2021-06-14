@@ -167,7 +167,7 @@ public class GRDM_U4 implements PlugInFilter {
 
 					// Chroma Key
 					if (methode == 6) {
-						double dist = Math.sqrt(Math.pow(255-rA, 2) + Math.pow(175-gA, 2) + Math.pow(75-bA, 2));
+						double dist = Math.sqrt(Math.pow(255-rA, 2) + Math.pow(88-gA, 2) + Math.pow(32-bA, 2));
 						
 						if (dist < 128) {
 							pixels_Erg[pos] = pixels_B[pos];
